@@ -1,0 +1,8 @@
+Install http-server if you haven't already:
+bash
+Copy code
+npm install -g http-server
+Run it in HTTPS mode:
+bash
+Copy code
+http-server -S -C cert.pem -K key.pem
