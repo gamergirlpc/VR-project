@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <title>VR Holographic Desktop</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <style>
-    /* Set up the transparent background */
     body {
       margin: 0;
       padding: 0;
@@ -16,38 +15,8 @@
       height: 100vh;
       background-color: transparent;
       font-family: 'Arial', sans-serif;
-      overflow: hidden;
     }
 
-    /* Container to simulate a VR experience */
-    #vr-container {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      perspective: 1000px;
-      transform-style: preserve-3d;
-      overflow: hidden;
-    }
-
-    /* Screen container to hold the apps */
-    #vr-screen {
-      width: 90vw;
-      height: 80vh;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      transform: rotateY(-10deg);
-    }
-
-    /* Title styling */
     .title {
       font-size: 2.5rem;
       color: #fff;
@@ -55,129 +24,54 @@
       text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
     }
 
-    /* Style for each app icon */
-    .app {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      width: 100px;
-      height: 120px;
-      margin: 10px;
-      padding: 10px;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease;
-      transform: translateZ(50px);
-    }
-
     .app-icon {
-      font-size: 3rem;
+      font-size: 4rem;
       color: #00FFFF;
       margin-bottom: 10px;
       text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
     }
 
-    .app p {
+    /* Style the text for the app */
+    .app-text {
       color: #fff;
-      margin: 0;
-      font-size: 1rem;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-    }
-
-    /* Add hover effects */
-    .app:hover {
-      transform: scale(1.1) translateZ(100px);
-      cursor: pointer;
-    }
-
-    /* Media query for iPhone Landscape */
-    @media (max-width: 768px) and (orientation: landscape) {
-      #vr-container {
-        perspective: 1500px;
-      }
-
-      #vr-screen {
-        width: 85vw;
-        height: 70vh;
-      }
-
-      .title {
-        font-size: 1.8rem;
-      }
-
-      .app {
-        width: 80px;
-        height: 100px;
-        margin: 8px;
-      }
-
-      .app-icon {
-        font-size: 2.5rem;
-      }
-    }
-
-    /* VR Button Styling */
-    #enter-vr {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #00FFFF;
-      color: #000;
       font-size: 1.5rem;
-      padding: 10px 20px;
-      border-radius: 5px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
-    }
-
-    #enter-vr:hover {
-      background-color: #00ccff;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
     }
   </style>
 </head>
 <body>
-  <div id="vr-container">
-    <div id="vr-screen">
-      <h1 class="title">Holographic Desktop</h1>
-      <div class="app" id="app1">
-        <div class="app-icon">🖥️</div>
-        <p>App 1</p>
-      </div>
-      <div class="app" id="app2">
-        <div class="app-icon">📂</div>
-        <p>App 2</p>
-      </div>
-      <div class="app" id="app3">
-        <div class="app-icon">🖨️</div>
-        <p>App 3</p>
-      </div>
-    </div>
-  </div>
+  <a-scene embedded>
+    <!-- VR Camera and Controls -->
+    <a-camera position="0 1.6 0" look-controls="enabled: true" wasd-controls="enabled: true"></a-camera>
 
-  <!-- VR Entry Button -->
-  <button id="enter-vr">Enter VR</button>
+    <!-- VR Background -->
+    <a-entity geometry="primitive: plane; height: 6; width: 6;" material="color: #3b3b3b; opacity: 0.5" position="0 0 -5" rotation="-90 0 0"></a-entity>
 
-  <script>
-    // VR Entry Button Logic
-    const vrButton = document.getElementById('enter-vr');
+    <!-- Title -->
+    <a-text value="Holographic Desktop" color="#fff" align="center" font="exo2.0" position="0 2 -4" scale="2 2 2" shader="msdf"></a-text>
 
-    vrButton.addEventListener('click', () => {
-      if (navigator.xr) {
-        navigator.xr.requestSession('immersive-vr').then((session) => {
-          // This starts the VR session
-          document.body.appendChild(session.renderState.canvas);
-          session.addEventListener('end', () => {
-            document.body.removeChild(session.renderState.canvas);
-          });
-        }).catch((error) => {
-          console.error('Error starting VR session:', error);
-        });
-      } else {
-        alert('WebXR is not supported on your device.');
-      }
-    });
-  </script>
+    <!-- App 1 -->
+    <a-entity position="-2 1 -4" rotation="0 0 0">
+      <a-box depth="0.3" width="1.5" height="1" color="#00FFFF"></a-box>
+      <a-text value="App 1" class="app-text" position="0 0 0.5"></a-text>
+      <a-text value="🖥️" class="app-icon" position="0 0.5 0.5" scale="3 3 3"></a-text>
+    </a-entity>
+
+    <!-- App 2 -->
+    <a-entity position="0 1 -4" rotation="0 0 0">
+      <a-box depth="0.3" width="1.5" height="1" color="#00FFFF"></a-box>
+      <a-text value="App 2" class="app-text" position="0 0 0.5"></a-text>
+      <a-text value="📂" class="app-icon" position="0 0.5 0.5" scale="3 3 3"></a-text>
+    </a-entity>
+
+    <!-- App 3 -->
+    <a-entity position="2 1 -4" rotation="0 0 0">
+      <a-box depth="0.3" width="1.5" height="1" color="#00FFFF"></a-box>
+      <a-text value="App 3" class="app-text" position="0 0 0.5"></a-text>
+      <a-text value="🖨️" class="app-icon" position="0 0.5 0.5" scale="3 3 3"></a-text>
+    </a-entity>
+
+  </a-scene>
 </body>
 </html>
