@@ -3,105 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Holographic VR Desktop</title>
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aframe-event-set-component@5.1.0/dist/aframe-event-set-component.min.js"></script>
+  <title>VR Holographic Desktop</title>
   <style>
+    /* Set up the transparent background */
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: transparent; /* Transparent background */
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* Center and style the VR container */
+    #vr-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px; /* This gives a 3D perspective */
+    }
+
+    /* Styling for the screen */
+    #vr-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.2); /* Slight transparency */
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px); /* Optional: adds a blur effect to the background */
+    }
+
+    /* Title styling */
+    .title {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    }
+
+    /* Style for each app icon */
+    .app {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100px;
+      height: 120px;
+      margin: 10px;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease; /* Added transition for hover effects */
+    }
+
+    .app-icon {
+      font-size: 3rem;
+      color: #00FFFF;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+    }
+
+    .app p {
+      color: #fff;
+      margin: 0;
+      font-size: 1rem;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    }
+
+    /* Add hover effects */
+    .app:hover {
+      transform: scale(1.1); /* Slightly enlarge the app when hovered */
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <a-scene>
-    <!-- Background -->
-    <a-sky color="#000"></a-sky>
-
-    <!-- Holographic Panel -->
-    <a-plane 
-      position="0 1.5 -3" 
-      rotation="0 0 0" 
-      width="3" 
-      height="2" 
-      material="color: #2E3A46; opacity: 0.4; transparent: true; shader: standard">
-    </a-plane>
-
-    <!-- App Icons -->
-    <a-box 
-      position="-1 2 -2.95" 
-      depth="0.05" 
-      height="0.4" 
-      width="0.4" 
-      color="#FF5722" 
-      opacity="0.7" 
-      material="emissive: #FF5722; emissiveIntensity: 0.8; shader: standard"
-      class="app-icon"
-      animation__hover="property: scale; to: 1.2 1.2 1.2; dur: 500; startEvents: mouseenter"
-      animation__leave="property: scale; to: 1 1 1; dur: 500; startEvents: mouseleave">
-      <a-text 
-        value="Notepad" 
-        align="center" 
-        position="0 -0.5 0.1" 
-        color="#FFFFFF">
-      </a-text>
-    </a-box>
-
-    <a-box 
-      position="0 2 -2.95" 
-      depth="0.05" 
-      height="0.4" 
-      width="0.4" 
-      color="#4CAF50" 
-      opacity="0.7" 
-      material="emissive: #4CAF50; emissiveIntensity: 0.8; shader: standard"
-      class="app-icon"
-      animation__hover="property: scale; to: 1.2 1.2 1.2; dur: 500; startEvents: mouseenter"
-      animation__leave="property: scale; to: 1 1 1; dur: 500; startEvents: mouseleave">
-      <a-text 
-        value="Browser" 
-        align="center" 
-        position="0 -0.5 0.1" 
-        color="#FFFFFF">
-      </a-text>
-    </a-box>
-
-    <a-box 
-      position="1 2 -2.95" 
-      depth="0.05" 
-      height="0.4" 
-      width="0.4" 
-      color="#2196F3" 
-      opacity="0.7" 
-      material="emissive: #2196F3; emissiveIntensity: 0.8; shader: standard"
-      class="app-icon"
-      animation__hover="property: scale; to: 1.2 1.2 1.2; dur: 500; startEvents: mouseenter"
-      animation__leave="property: scale; to: 1 1 1; dur: 500; startEvents: mouseleave">
-      <a-text 
-        value="Settings" 
-        align="center" 
-        position="0 -0.5 0.1" 
-        color="#FFFFFF">
-      </a-text>
-    </a-box>
-
-    <!-- VR Camera -->
-    <a-camera position="0 1.6 0">
-      <a-cursor 
-        color="aqua" 
-        fuse="true" 
-        fuse-timeout="1500">
-      </a-cursor>
-    </a-camera>
-  </a-scene>
-
-  <script>
-    // Basic interaction for app icons
-    document.querySelectorAll('.app-icon').forEach(icon => {
-      icon.addEventListener('click', () => {
-        alert(`You opened the ${icon.querySelector('a-text').getAttribute('value')} app!`);
-      });
-    });
-  </script>
+  <div id="vr-container">
+    <div id="vr-screen">
+      <h1 class="title">Holographic Desktop</h1>
+      <div class="app" id="app1">
+        <div class="app-icon">🖥️</div>
+        <p>App 1</p>
+      </div>
+      <div class="app" id="app2">
+        <div class="app-icon">📂</div>
+        <p>App 2</p>
+      </div>
+      <div class="app" id="app3">
+        <div class="app-icon">🖨️</div>
+        <p>App 3</p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
