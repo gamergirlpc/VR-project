@@ -13,9 +13,9 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: transparent; /* Transparent background */
+      background-color: transparent;
       font-family: 'Arial', sans-serif;
-      overflow: hidden; /* Hide overflow to maintain the VR experience */
+      overflow: hidden;
     }
 
     /* Container to simulate a VR experience */
@@ -25,9 +25,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      perspective: 1000px; /* This gives a 3D perspective */
-      transform-style: preserve-3d; /* For 3D effect */
-      overflow: hidden; /* Prevent overflow */
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      overflow: hidden;
     }
 
     /* Screen container to hold the apps */
@@ -38,12 +38,12 @@
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
-      background: rgba(255, 255, 255, 0.2); /* Slight transparency */
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 15px;
       padding: 20px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px); /* Optional: adds a blur effect to the background */
-      transform: rotateY(-10deg); /* Slight rotation for 3D effect */
+      backdrop-filter: blur(10px);
+      transform: rotateY(-10deg);
     }
 
     /* Title styling */
@@ -67,8 +67,8 @@
       background-color: rgba(0, 0, 0, 0.6);
       border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease; /* Added transition for hover effects */
-      transform: translateZ(50px); /* Make apps appear at different depths */
+      transition: transform 0.3s ease;
+      transform: translateZ(50px);
     }
 
     .app-icon {
@@ -87,7 +87,7 @@
 
     /* Add hover effects */
     .app:hover {
-      transform: scale(1.1) translateZ(100px); /* Slightly enlarge and bring to the front */
+      transform: scale(1.1) translateZ(100px);
       cursor: pointer;
     }
 
@@ -116,6 +116,24 @@
         font-size: 2.5rem;
       }
     }
+
+    /* VR Button Styling */
+    #enter-vr {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #00FFFF;
+      color: #000;
+      font-size: 1.5rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+    }
+
+    #enter-vr:hover {
+      background-color: #00ccff;
+    }
   </style>
 </head>
 <body>
@@ -136,5 +154,29 @@
       </div>
     </div>
   </div>
+
+  <!-- VR Entry Button -->
+  <button id="enter-vr">Enter VR</button>
+
+  <script>
+    // VR Entry Button Logic
+    const vrButton = document.getElementById('enter-vr');
+
+    vrButton.addEventListener('click', () => {
+      if (navigator.xr) {
+        navigator.xr.requestSession('immersive-vr').then((session) => {
+          // This starts the VR session
+          document.body.appendChild(session.renderState.canvas);
+          session.addEventListener('end', () => {
+            document.body.removeChild(session.renderState.canvas);
+          });
+        }).catch((error) => {
+          console.error('Error starting VR session:', error);
+        });
+      } else {
+        alert('WebXR is not supported on your device.');
+      }
+    });
+  </script>
 </body>
 </html>
